@@ -46,7 +46,13 @@ print "Done"
 
 # Insere uma "parede"
 def exploredInsert(x, y):
-    explored[int(x / tileSize + mapOffset)][int(y / tileSize + mapOffset)] = 1
+    vicinity = [(0,1),(0,-1),(1,0),(-1,0),(1,1),(1,-1),(-1,1),(-1,-1),
+                (0,2),(0,-2),(1,2),(1,-2),(2,0),(2,-1),(2,-2),(-2,-2),
+                (-2,2),(-2,1),(-2,0),(-1,2),(-1,-2),(-2,-1),(2,2),(2,1)]
+
+    for i, j in vicinity:
+        #print "(%d, %d)" % (i, j)
+        explored[int((x+i) / tileSize + mapOffset)][int((y+j) / tileSize + mapOffset)] = 1
 
 #Recupera uma coordenada do array para real
 def getRealCoords(x, y):
