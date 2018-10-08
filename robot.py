@@ -32,11 +32,11 @@ if not Aria_parseArgs():
 
 print "Initializing array"
 
-endGoal = {'x': 9000, 'y': 9000}
+endGoal = {'x': 12000, 'y': 7000}
 
 tileSize = 510 # 51cm
 mapSize = int(45 * 1000 / tileSize) # 45m de largura maxima
-mapOffset = mapSize / 2
+mapOffset = (mapSize / 2)
 explored = numpy.zeros(shape=(mapSize,mapSize))
 
 print "Done"
@@ -56,7 +56,7 @@ def getArrayCoords(x, y): # O mesmo de cima mais arredondado
     return (int(round(x / tileSize + mapOffset)), int(round(y / tileSize + mapOffset)))
 
 robot.addRangeDevice(sonar)
-robot.runAsync(1)
+robot.runAsync(True)
 
 ##########
 # Acoes
@@ -65,7 +65,7 @@ robot.runAsync(1)
 recover = ArActionStallRecover()
 robot.addAction(recover, 100)
 
-gotoPoseAction = ArActionGoto("goto")
+gotoPoseAction = ArActionGotoStraight("goto")
 robot.addAction(gotoPoseAction, 50)
 
 stopAction = ArActionStop ("stop")
@@ -92,17 +92,16 @@ def calcDistance(a, b):
     return (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2
 
 def heuristics(a, b):
-	dx = abs(a[0] - b[0])
-	dy = abs(a[1] - b[1])
-	
-	minval = min(dx, dy)
-	maxval = max(dx, dy)
+    dx = abs(a[0] - b[0])
+    dy = abs(a[1] - b[1])
 
-	diagonalDistance = minval
-	straightDistance = maxval - minval
+    minval = min(dx, dy)
+    maxval = max(dx, dy)
 
-	return m.sqrt(2) * diagonalDistance + straightDistance
-	
+    diagonalDistance = minval
+    straightDistance = maxval - minval
+
+    return m.sqrt(2) * diagonalDistance + straightDistance
 
 def aStar(start):
 
